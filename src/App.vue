@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" height="300" width="300">
-    <HelloWorld msg="Digite o nome da série"/>
+    <Notes msg="Digite o nome da série"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Notes from './components/Notes.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Notes: Notes
   }
 }
 </script>
