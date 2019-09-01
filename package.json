@@ -9,7 +9,7 @@
     "deploy": "vue-cli-service build && cd dist && surge . --domain imdbnote.surge.sh"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "lodash": "^4.17.11",
     "npm": "^6.5.0",
     "vue": "^2.5.17"
