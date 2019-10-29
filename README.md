@@ -1,5 +1,7 @@
 # IMDbNotes
 
+Simple site that, when inserted a show name, it returns all the seasons of it, ranked by imdb popular note.
+
 ## Project setup
 ```
 npm install
