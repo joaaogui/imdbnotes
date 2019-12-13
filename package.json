@@ -11,7 +11,7 @@
   "dependencies": {
     "axios": "^0.18.1",
     "lodash": "^4.17.13",
-    "npm": "^6.5.0",
+    "npm": "^6.13.4",
     "vue": "^2.5.17"
   },
   "devDependencies": {
