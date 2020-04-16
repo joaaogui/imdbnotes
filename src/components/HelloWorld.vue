@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import {getTitle} from "@/api/title"
+  import {getTitle, searchTitle} from "@/api/title"
   import {getSeasons} from "@/api/season"
 
   export default {
@@ -39,7 +39,10 @@
       async searchTitle() {
         try {
           let seasonsNotes = {}
-          const title = await getTitle(this.seriesName)
+          const leanTitle = await searchTitle(this.seriesName)
+          const titleId = leanTitle.data.Search[0].imdbID
+          const title = await getTitle(titleId)
+
           for (let seasonNumber of [...Array(Number(title.data.totalSeasons)).keys()]) {
             seasonNumber += 1
             const season = await getSeasons(title.data.imdbID, seasonNumber)
