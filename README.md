@@ -1,6 +1,4 @@
-# IMDbNotes
-
-Simple site that, when inserted a show name, it returns all the seasons of it, ranked by imdb popular note.
+# bestseasonimdb
 
 ## Project setup
 ```
@@ -15,11 +13,6 @@ npm run serve
 ### Compiles and minifies for production
 ```
 npm run build
-```
-
-### Run your tests
-```
-npm run test
 ```
 
 ### Lints and fixes files

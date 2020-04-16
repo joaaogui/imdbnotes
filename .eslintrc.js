@@ -4,9 +4,12 @@ module.exports = {
     node: true
   },
   'extends': [
-    'plugin:vue/strongly-recommended',
-    '@vue/standard'
+    'plugin:vue/essential',
+    'eslint:recommended'
   ],
+  parserOptions: {
+    parser: 'babel-eslint'
+  },
   rules: {
     'indent': ['off', 2],
     'vue/require-default-prop': 'off',
@@ -22,9 +25,7 @@ module.exports = {
     'quotes': 'warn',
     'vue/valid-v-for': 'warn',
     'comma-dangle': 'warn',
-
-  },
-  parserOptions: {
-    parser: 'babel-eslint'
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
 }

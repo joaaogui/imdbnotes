@@ -3,14 +3,14 @@
     <h1>{{ msg }}</h1>
     <h4> E descubra a melhor temporada, de acordo com as notas do IMDb</h4>
     <input
-      @keyup.enter="searchTitle"
-      placeholder="Ex: Game Of Thrones"
-      v-model="seriesName"
+        @keyup.enter="searchTitle"
+        placeholder="Ex: Game Of Thrones"
+        v-model="seriesName"
     >
     <button
-      @click="searchTitle"
-      class="dropdown-item text-left"
-      type="submit"
+        @click="searchTitle"
+        class="dropdown-item text-left"
+        type="submit"
     >
       GO
     </button>
@@ -56,8 +56,7 @@
           }
           let entries = Object.entries(seasonsNotes)
           let sorted = entries.sort((a, b) => a[1] - b[1])
-          this.ranking = sorted
-          console.log(sorted.reverse())
+          this.ranking = sorted.reverse()
         } catch (error) {
           console.log(error)
         }
