@@ -1,104 +1,71 @@
 <template>
-    <div>
-        <link rel="stylesheet"
-              href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-              integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-              crossorigin="anonymous">
-        <h1>{{ msg }}</h1>
-        <h4> E descubra a melhor temporada, de acordo com as notas do IMDb</h4>
-        <input v-model="seriesName" @keyup.enter="say" placeholder="Ex: Game Of Thrones">
-        <button type="submit" class="dropdown-item text-left" v-on:click="say">GO</button>
-        <div v-if="found">
-            <div v-for="(season, index) in ranking">
-                <p class="best-season" v-if="index === 0 ">Temporada: {{ season[0] }} Nota: {{ season[1] }}</p>
-                <p v-else>Temporada: {{ season[0] }} Nota: {{ season[1] }}</p>
-                <p></p>
-            </div>
-        </div>
-        <div v-else>
-            <p> Série não Encontrada </p>
-        </div>
+  <div>
+    <h1>{{ msg }}</h1>
+    <h4> E descubra a melhor temporada, de acordo com as notas do IMDb</h4>
+    <input
+      @keyup.enter="searchTitle"
+      placeholder="Ex: Game Of Thrones"
+      v-model="seriesName"
+    >
+    <button
+      @click="searchTitle"
+      class="dropdown-item text-left"
+      type="submit"
+    >
+      GO
+    </button>
+    <div v-for="season in ranking"
+         :key="season[0]">
+      <p>Temporada: {{ season[0] }} Nota: {{ season[1] }}</p>
     </div>
+  </div>
 </template>
 
 <script>
-    import axios from 'axios';
-    import 'lodash';
-    import * as _ from "lodash";
+  import 'lodash'
+  import {getTitle} from '@/api/title'
+  import {getSeasons} from '@/api/season'
 
+  export default {
+    name: 'Notes',
+    props: {
+      msg: String
+    },
+    data: () => ({
+      seriesName: '',
+      ranking: {}
+    }),
+    methods: {
 
-    export default {
-        name: 'Notes',
-        props: {
-            msg: String
-        },
-        data: function () {
-            return {
-                seriesName: "",
-                info: {},
-                found: true
+      async searchTitle() {
+        try {
+          let seasonsNotes = {}
+          const title = await getTitle(this.seriesName)
+          for (let seasonNumber of [...Array(Number(title.data.totalSeasons)).keys()]) {
+            seasonNumber += 1
+            const season = await getSeasons(title.data.imdbID, seasonNumber)
+            let seasonRating = 0
+            for (let [index, episode] of season.data.Episodes.entries()) {
+              let rating = episode.imdbRating
+              seasonRating = Number(rating) + seasonRating
+              if (index === season.data.Episodes.length - 1) {
+                seasonsNotes[seasonNumber] = seasonRating / season.data.Episodes.length
+                seasonRating = 0
+              }
             }
-        },
-        computed: {
-            ranking: function () {
-
-                var seasonArray = [];
-                for (var season in this.info) {
-                    seasonArray.push([season, this.info[season]]);
-                }
-
-                seasonArray.sort(function (a, b) {
-                    return b[1] - a[1];
-                });
-
-                return seasonArray
-            }
-        },
-        methods: {
-            say: function () {
-                var seasonNotes = {}
-                let url = `http://www.omdbapi.com/?t=${this.seriesName}&apikey=5799c6fa`
-                axios
-                    .get(url)
-                    .then(response => {
-
-                        if (response.data.Response === "False" || response.data.Type === "movie") {
-                            this.found = false
-                        } else {
-                            this.found = true
-                            for (const seasonNumber of _.range(1, parseInt(response.data.totalSeasons) + 1)) {
-                                let url = `http://www.omdbapi.com/?t=${this.seriesName}&Season=${seasonNumber}&apikey=5799c6fa`
-                                axios
-                                    .get(url)
-                                    .then(response => {
-                                        var seasonNotesSum = 0
-                                        for (const episode in response.data.Episodes) {
-                                            if (isNaN(response.data.Episodes[episode].imdbRating))
-                                                continue
-                                            seasonNotesSum += parseFloat(response.data.Episodes[episode].imdbRating)
-                                        }
-                                        seasonNotes[seasonNumber] = (seasonNotesSum / parseInt(response.data.Episodes.length)).toFixed(2)
-
-                                        this.info = "Season: " + seasonNumber + " Nota: " + (seasonNotesSum / parseInt(response.data.Episodes.length)).toFixed(2)
-                                        this.info = seasonNotes
-
-                                    })
-                            }
-                        }
-
-                    })
-                    .catch(error => (this.found = false))
-            }
+          }
+          let entries = Object.entries(seasonsNotes)
+          let sorted = entries.sort((a, b) => a[1] - b[1])
+          this.ranking = sorted
+          console.log(sorted.reverse())
+        } catch (error) {
+          console.log(error)
         }
+      }
     }
+  }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-    .best-season {
-        font-weight: bold;
-    }
-    h3 {
-        margin: 40px 0 0;
-    }
+<style scoped lang="scss">
+
 </style>
