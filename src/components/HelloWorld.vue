@@ -22,17 +22,16 @@
 </template>
 
 <script>
-  import 'lodash'
-  import {getTitle} from '@/api/title'
-  import {getSeasons} from '@/api/season'
+  import {getTitle} from "@/api/title"
+  import {getSeasons} from "@/api/season"
 
   export default {
-    name: 'Notes',
+    name: "Notes",
     props: {
       msg: String
     },
     data: () => ({
-      seriesName: '',
+      seriesName: "",
       ranking: {}
     }),
     methods: {
