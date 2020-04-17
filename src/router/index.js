@@ -6,8 +6,8 @@ Vue.use(VueRouter)
   const routes = [
   {
     path: "/",
-    name: "Home",
-    component: () => import(/* webpackChunkName: "about" */ "../components/HelloWorld")
+    name: "SearchTitle",
+    component: () => import(/* webpackChunkName: "about" */ "../components/SearchTitle")
   }
 ]
 
