@@ -1,10 +1,6 @@
 <template>
     <div class="main">
-        <h4> E descubra a melhor temporada, de acordo com as notas do IMDb</h4>
         <v-text-field
-            label="Solo"
-            solo
-            dense
             @keyup.enter="searchTitle"
             placeholder="Ex: Game Of Thrones"
             v-model="seriesName"
@@ -27,11 +23,6 @@
       seasonsNotes: {},
       ranking: {}
     }),
-    watch: {
-      search(val) {
-        val && val !== this.select && this.searchTitle(val)
-      }
-    },
     methods: {
       async searchTitle() {
         const leanTitle = await searchTitle(this.seriesName)
@@ -68,7 +59,7 @@
 </script>
 
 <style scoped lang="scss">
-.main {
-    text-align: center;
-}
+    .main {
+        text-align: center;
+    }
 </style>
