@@ -3,11 +3,16 @@ import VueRouter from "vue-router"
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: "/",
-    name: "SearchTitle",
-    component: () => import(/* webpackChunkName: "about" */ "../components/SearchTitle")
+    name: "HomePage",
+    component: () => import("@/views/HomePage")
+  },
+  {
+    path: "/:title",
+    name: "Seasons",
+    component: () => import("@/views/Seasons")
   }
 ]
 
