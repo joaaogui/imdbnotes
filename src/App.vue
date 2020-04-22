@@ -1,22 +1,22 @@
 <template>
     <v-app>
         <v-app-bar
-            height="100"
-            flat
+            :value="showSeasons"
             app
             class="pr-12"
-            :value="showSeasons">
+            flat
+            height="100">
             <v-img
-                src="./assets/logo.png"
-                max-width="100" max-height="70"
-                class="mr-4"
                 @click="goHome"
+                class="mr-4" max-height="70"
+                max-width="100"
+                src="./assets/logo.png"
                 style="cursor: pointer"
             />
             <SearchTitle v-if="showSeasons"/>
         </v-app-bar>
         <v-content>
-            <v-container class="fill-height" fluid>
+            <v-container fluid>
                 <router-view/>
             </v-container>
         </v-content>
@@ -40,9 +40,9 @@
         "setRankedSeasons",
         "setInput"
       ]),
-      goHome(){
+      goHome() {
         this.setRankedSeasons([])
-        this.setInput('')
+        this.setInput("")
         this.$router.push("/")
       }
     }

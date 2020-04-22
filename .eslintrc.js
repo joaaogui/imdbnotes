@@ -22,7 +22,7 @@ module.exports = {
     "space-before-function-paren": "off",
     "object-curly-spacing": "off",
     "vue/singleline-html-element-content-newline": "off",
-    "quotes": "warn",
+    "quotes": "off",
     "vue/valid-v-for": "warn",
     "comma-dangle": "warn",
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",

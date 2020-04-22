@@ -9,10 +9,10 @@ export default new Vuex.Store({
     rankedSeasons: []
   },
   mutations: {
-    setRankedSeasons (state, rankedSeasons) {
+    setRankedSeasons(state, rankedSeasons) {
       state.rankedSeasons = rankedSeasons
     },
-    setInput (state, input) {
+    setInput(state, input) {
       state.input = input
     }
   },
@@ -21,8 +21,6 @@ export default new Vuex.Store({
       return !!state.rankedSeasons.length
     }
   },
-  actions: {
-  },
-  modules: {
-  }
+  actions: {},
+  modules: {}
 })

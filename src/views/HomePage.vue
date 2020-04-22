@@ -4,10 +4,10 @@
         justify="center"
     >
         <v-col
-            cols="12"
-            sm="8"
-            md="4"
             class="text-center"
+            cols="12"
+            md="4"
+            sm="8"
         >
             <v-img src="../assets/logo.png"/>
             <SearchTitle/>
@@ -24,6 +24,6 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 
 </style>
