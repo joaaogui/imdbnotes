@@ -1,65 +1,60 @@
 <template>
-    <div class="main">
-        <v-text-field
-            @keyup.enter="searchTitle"
-            placeholder="Ex: Game Of Thrones"
-            v-model="seriesName"
-        />
-        <div v-for="season in ranking"
-             :key="season[0]">
-            <p>Temporada: {{ season[0] }} Nota: {{ season[1] }}</p>
-        </div>
-    </div>
+    <v-text-field
+        @keyup.enter="searchTitle"
+        placeholder="Ex: Game Of Thrones"
+        v-model="seriesName"
+        hide-details
+    />
 </template>
 
 <script>
   import {getTitle, searchTitle} from "@/api/title"
   import {getSeason} from "@/api/season"
+  import {mapMutations} from "vuex"
 
   export default {
     name: "SearchTitle",
     data: () => ({
-      seriesName: "",
-      seasonsNotes: {},
-      ranking: {}
+      seriesName: ""
     }),
     methods: {
+      ...mapMutations([
+        "setRankedSeasons",
+        "setInput"
+      ]),
       async searchTitle() {
-        const leanTitle = await searchTitle(this.seriesName)
-        const titleId = leanTitle.data.Search[0].imdbID
-        this.getTitle(titleId)
+        this.setInput(this.seriesName)
+        const title = await searchTitle(this.seriesName)
+        const titleId = title.data.Search[0].imdbID
+        this.getSeasons(titleId)
       },
-      async getTitle(titleId) {
+      async getSeasons(titleId) {
         const title = await getTitle(titleId)
-        for (let seasonNumber of [...Array(Number(title.data.totalSeasons)).keys()]) {
-          this.getSeasonEpisodes(titleId, seasonNumber + 1)
+        this.getSeasonsEpisodes(titleId, Number(title.data.totalSeasons))
+      },
+      async getSeasonsEpisodes(titleId, seasons) {
+        let seasonsNotes = {}
+        for (let seasonNumber of [...Array(seasons).keys()]) {
+          const season = await getSeason(titleId, seasonNumber + 1)
+          seasonsNotes[seasonNumber + 1] = this.getSeasonNote(season.data.Episodes)
         }
+        this.rankSeasons(seasonsNotes)
       },
-      async getSeasonEpisodes(titleId, seasonNumber) {
-        const season = await getSeason(titleId, seasonNumber)
-        this.getSeasonNote(season.data.Episodes, seasonNumber)
-      },
-      getSeasonNote(episodes, seasonNumber) {
+      getSeasonNote(episodes) {
         let seasonRating = 0
         for (let [index, episode] of episodes.entries()) {
           seasonRating += Number(episode.imdbRating)
           if (index === episodes.length - 1) {
-            this.seasonsNotes[seasonNumber] = seasonRating / episodes.length
+            return seasonRating / episodes.length
           }
         }
-        this.buildRanking()
       },
-      buildRanking() {
-        let entries = Object.entries(this.seasonsNotes)
-        let sorted = entries.sort((a, b) => a[1] - b[1])
-        this.ranking = sorted.reverse()
+      rankSeasons(seasonsNotes) {
+        let entries = Object.entries(seasonsNotes)
+        let sorted = entries.sort((a, b) => b[1] - a[1])
+        this.setRankedSeasons(sorted)
+        this.$router.push({name: "Seasons", params: {title: this.seriesName}})
       }
     }
   }
 </script>
-
-<style scoped lang="scss">
-    .main {
-        text-align: center;
-    }
-</style>
