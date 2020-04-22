@@ -1,9 +1,7 @@
-import axios from "./index"
+import axios from './index'
 
-const searchTitle = (title) => axios.get(`?page=1&r=json&s=${title}`)
-const getTitle = (id) =>  axios.get(`?i=${id}&r=json`)
+const getTitle = (title) => axios.get(`?t=${title}&apikey=${process.env.VUE_APP_API_KEY}`)
 
 export {
-  getTitle,
-  searchTitle
+  getTitle
 }

@@ -8,15 +8,24 @@
 </template>
 
 <script>
-  import {getTitle, searchTitle} from "@/api/title"
-  import {getSeason} from "@/api/season"
-  import {mapMutations} from "vuex"
+  import {getTitle} from "@/api/title"
+  import {getSeasons} from "@/api/season"
+  import {mapMutations, mapState} from "vuex"
 
   export default {
     name: "SearchTitle",
     data: () => ({
       seriesName: ""
     }),
+    mounted() {
+      console.log(this.input)
+      this.seriesName = this.input
+    },
+    computed: {
+      ...mapState([
+        "input"
+      ])
+    },
     methods: {
       ...mapMutations([
         "setRankedSeasons",
@@ -24,18 +33,13 @@
       ]),
       async searchTitle() {
         this.setInput(this.seriesName)
-        const title = await searchTitle(this.seriesName)
-        const titleId = title.data.Search[0].imdbID
-        this.getSeasons(titleId)
-      },
-      async getSeasons(titleId) {
-        const title = await getTitle(titleId)
-        this.getSeasonsEpisodes(titleId, Number(title.data.totalSeasons))
+        const title = await getTitle(this.seriesName)
+        this.getSeasonsEpisodes(title.data.imdbID, Number(title.data.totalSeasons))
       },
       async getSeasonsEpisodes(titleId, seasons) {
         let seasonsNotes = {}
         for (let seasonNumber of [...Array(seasons).keys()]) {
-          const season = await getSeason(titleId, seasonNumber + 1)
+          const season = await getSeasons(titleId, seasonNumber + 1)
           seasonsNotes[seasonNumber + 1] = this.getSeasonNote(season.data.Episodes)
         }
         this.rankSeasons(seasonsNotes)

@@ -13,7 +13,7 @@
                 @click="goHome"
                 style="cursor: pointer"
             />
-            <SearchTitle/>
+            <SearchTitle v-if="showSeasons"/>
         </v-app-bar>
         <v-content>
             <v-container class="fill-height" fluid>
@@ -37,10 +37,12 @@
     },
     methods: {
       ...mapMutations([
-        "setRankedSeasons"
+        "setRankedSeasons",
+        "setInput"
       ]),
       goHome(){
         this.setRankedSeasons([])
+        this.setInput('')
         this.$router.push("/")
       }
     }
