@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container fluid>
         <v-row v-if="show.imageUrl">
             <v-col cols="12" lg="2" md="4" sm="6" xs="12">
                 <v-img :src="show.imageUrl" contain></v-img>
@@ -18,7 +18,7 @@
                 <div>Rating: {{ season[1].toFixed(2) }}</div>
             </div>
         </div>
-    </div>
+    </v-container>
 </template>
 
 <script>

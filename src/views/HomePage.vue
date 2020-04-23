@@ -1,4 +1,5 @@
 <template>
+    <v-container fluid class="fill-height">
     <v-row
         align="center"
         justify="center"
@@ -13,6 +14,7 @@
             <SearchTitle/>
         </v-col>
     </v-row>
+    </v-container>
 </template>
 
 <script>
