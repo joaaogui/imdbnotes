@@ -1,10 +1,10 @@
 <template>
     <v-text-field
-        :loading="loading"
         @keyup.enter="searchTitle"
         hide-details
         placeholder="Enter the show name"
         v-model="seriesName"
+        :loading="loading"
     />
 </template>
 
@@ -27,10 +27,11 @@
       ])
     },
     methods: {
-      searchTitle() {
-        searchTitle(this.seriesName).then(
-          this.$router.push({name: "Seasons", params: {title: this.seriesName}})
-        )
+      async searchTitle() {
+        this.loading = true
+        await searchTitle(this.seriesName)
+        this.loading = false
+        this.$router.push({name: "Seasons", params: {title: this.seriesName}})
       }
     }
   }

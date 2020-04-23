@@ -2,10 +2,10 @@ import {getTitle} from "@/api/title";
 import {getSeasons} from "@/api/season";
 import store from "@/store/index"
 
-export async function searchTitle(seriesName) {
+export const searchTitle = async (seriesName) => {
   store.commit("setInput", seriesName)
   const title = await getTitle(seriesName)
-  getSeasonsEpisodes(title.data.imdbID, Number(title.data.totalSeasons))
+  await getSeasonsEpisodes(title.data.imdbID, Number(title.data.totalSeasons))
 }
 
 async function getSeasonsEpisodes(titleId, seasons) {
