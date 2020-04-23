@@ -1,19 +1,19 @@
 <template>
     <v-app>
         <v-app-bar
-            :value="showSeasons"
+            :value="showAppBar && this.$route.name === 'Seasons'"
             app
             class="pr-12"
             flat
             height="100">
             <v-img
                 @click="goHome"
-                class="mr-4" max-height="70"
-                max-width="100"
+                class="mr-4" max-height="80"
+                max-width="110"
                 src="./assets/logo.png"
                 style="cursor: pointer"
             />
-            <SearchTitle v-if="showSeasons"/>
+            <SearchTitle v-if="showAppBar"/>
         </v-app-bar>
         <v-content>
             <v-container fluid>
@@ -30,10 +30,17 @@
   export default {
     name: "App",
     components: {SearchTitle},
+    mounted() {
+      console.log(this.imageHeight)
+    },
+
     computed: {
       ...mapGetters([
-        "showSeasons"
-      ])
+        "showAppBar"
+      ]),
+      imageHeight() {
+        return this.$vuetify.breakpoint.name
+      }
     },
     methods: {
       ...mapMutations([

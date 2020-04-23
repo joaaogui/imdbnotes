@@ -1,5 +1,15 @@
 <template>
     <div>
+        <v-row v-if="show.imageUrl">
+            <v-col cols="12" lg="2" md="4" sm="6" xs="12">
+                <v-img :src="show.imageUrl" contain></v-img>
+            </v-col>
+            <v-col>
+                <div style="font-size: 30px">{{show.name}}</div>
+                <span>{{show.description}}</span>
+            </v-col>
+        </v-row>
+
         <div :class="index===0 ? 'best-season': ''" :key="season[0]" class="season"
              v-for="(season, index) in rankedSeasons">
             <span class="position">{{index + 1}}</span>
@@ -20,7 +30,8 @@
     computed: {
       ...mapState([
         "input",
-        "rankedSeasons"
+        "rankedSeasons",
+        "show"
       ])
     },
     mounted() {

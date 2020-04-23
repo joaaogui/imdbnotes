@@ -6,7 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     input: "",
-    rankedSeasons: []
+    rankedSeasons: [],
+    show: {
+      imageUrl: null,
+      name: null,
+      description: null
+    }
   },
   mutations: {
     setRankedSeasons(state, rankedSeasons) {
@@ -14,11 +19,16 @@ export default new Vuex.Store({
     },
     setInput(state, input) {
       state.input = input
+    },
+    setShow(state, show) {
+      state.show.imageUrl = show.Poster
+      state.show.name = show.Title
+      state.show.description = show.Plot
     }
   },
   getters: {
-    showSeasons: state => {
-      return !!state.rankedSeasons.length
+    showAppBar: state => {
+      return !!state.input
     }
   },
   actions: {},

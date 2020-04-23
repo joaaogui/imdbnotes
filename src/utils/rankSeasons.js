@@ -4,9 +4,11 @@ import store from "@/store/index"
 
 export const searchTitle = async (seriesName) => {
   store.commit("setInput", seriesName)
+  store.commit("setShow", {})
+  store.commit("setRankedSeasons", {})
   try {
     const title = await getTitle(seriesName)
-    console.log(title)
+    store.commit("setShow", title.data)
     await getSeasonsEpisodes(title.data.imdbID, Number(title.data.totalSeasons))
   } catch (e) {
     throw new Error(e)

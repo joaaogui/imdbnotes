@@ -31,6 +31,7 @@
     methods: {
       async searchTitle() {
         this.loading = true
+        this.errorMessage = ""
         try {
           await searchTitle(this.seriesName)
           this.$router.push({name: "Seasons", params: {title: this.seriesName}})
