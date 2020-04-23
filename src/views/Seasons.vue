@@ -25,7 +25,6 @@
     },
     mounted() {
       if (!this.input && this.$route.params.title) {
-        console.log("entrou")
         searchTitle(this.$route.params.title)
       }
     }

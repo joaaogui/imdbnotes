@@ -1,10 +1,11 @@
 <template>
     <v-text-field
         @keyup.enter="searchTitle"
-        hide-details
+        hide-details="auto"
         placeholder="Enter the show name"
         v-model="seriesName"
         :loading="loading"
+        :error-messages="errorMessage"
     />
 </template>
 
@@ -16,7 +17,8 @@
     name: "SearchTitle",
     data: () => ({
       seriesName: "",
-      loading: false
+      loading: false,
+      errorMessage: ''
     }),
     mounted() {
       this.seriesName = this.input
@@ -29,9 +31,14 @@
     methods: {
       async searchTitle() {
         this.loading = true
-        await searchTitle(this.seriesName)
+        try {
+          await searchTitle(this.seriesName)
+          this.$router.push({name: "Seasons", params: {title: this.seriesName}})
+        } catch (e) {
+          this.errorMessage = "Show not found!"
+        }
         this.loading = false
-        this.$router.push({name: "Seasons", params: {title: this.seriesName}})
+
       }
     }
   }
