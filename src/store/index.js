@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     input: "",
     rankedSeasons: [],
+    seasonEpisodes: {},
     show: {
       imageUrl: null,
       name: null,
@@ -16,6 +17,9 @@ export default new Vuex.Store({
   mutations: {
     setRankedSeasons(state, rankedSeasons) {
       state.rankedSeasons = rankedSeasons
+    },
+    setSeasonEpisodes(state, seasonEpisodes) {
+      state.seasonEpisodes = seasonEpisodes
     },
     setInput(state, input) {
       state.input = input

@@ -13,33 +13,64 @@
         <div :class="index===0 ? 'best-season': ''" :key="season[0]" class="season"
              v-for="(season, index) in rankedSeasons">
             <span class="position">{{index + 1}}</span>
-            <div class="ml-8" style="display: block">
+            <div class="ml-8 mr-8" style="display: block">
                 <div>Season: {{ season[0] }}</div>
                 <div>Rating: {{ season[1].toFixed(2) }}</div>
+
+            </div>
+            <div style="text-align: right;">
+                <v-icon style="top: 25%;" @click.stop="showEpisodes(season[0])">mdi-information-outline</v-icon>
             </div>
         </div>
+
+        <v-dialog
+                v-model="dialog"
+                max-width="250"
+                style="text-align: center"
+        >
+            <v-card class="align-center pa-5" style="text-align: center">
+                <div v-for="(episode, index) in activeSeason" :key="index">
+                    <span>Episode {{index + 1}} - Rating {{episode}}</span>
+                </div>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
-  import {mapState} from "vuex";
-  import {searchTitle} from "@/utils/rankSeasons"
+    import {mapState} from "vuex";
+    import {searchTitle} from "@/utils/rankSeasons"
 
-  export default {
-    name: "Seasons",
-    computed: {
-      ...mapState([
-        "input",
-        "rankedSeasons",
-        "show"
-      ])
-    },
-    mounted() {
-      if (!this.input && this.$route.params.title) {
-        searchTitle(this.$route.params.title)
-      }
+    export default {
+        name: "Seasons",
+        data: () => ({
+            dialog: false,
+            season: null
+        }),
+        computed: {
+            ...mapState([
+                "input",
+                "rankedSeasons",
+                "seasonEpisodes",
+                "show"
+            ]),
+            activeSeason() {
+                console.log(this.seasonEpisodes[this.season])
+                return this.seasonEpisodes[this.season]
+            }
+        },
+        mounted() {
+            if (!this.input && this.$route.params.title) {
+                searchTitle(this.$route.params.title)
+            }
+        },
+        methods: {
+            showEpisodes(season) {
+                this.season = season
+                this.dialog = true
+            }
+        }
     }
-  }
 </script>
 
 <style lang="scss" scoped>
